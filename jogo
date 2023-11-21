@@ -1,0 +1,17 @@
+import pygame
+import sys
+
+#declaração de variáveis
+
+displayHeight = 100
+displayWitdh = 1350
+clock = 10
+
+
+#setup do pygame
+pygame.init()
+screen = pygame.display.set_mode((displayWitdh, displayHeight))
+clock = pygame.time.Clock()
+
+def game()
+
