@@ -260,7 +260,7 @@ def Jogo():
         #-----------------#
         
         # Checa a quantidade de combustível #
-        if combustivel == 0:
+        if combustivel <= 0:
             pygame.quit()
 
             GameoverCombustivel()
