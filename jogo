@@ -1,53 +1,229 @@
-import pygame
-import sys
+"""
+Universidade de Brasilia
+Instituto de Ciencias Exatas
+Departamento de Ciencia da Computacao
+Algoritmos e Programação de Computadores – 2/2023
+Turma: Prof. Carla Castanho e Prof. Frank Ned
+Aluno(a): Rafael Dias Ghiorzi
+Matricula: 232006144
+Projeto Final - Parte 1
+Descricao: < breve descricao do programa >
 
-#declaração de variáveis
-displayHeight = 10
-displayWitdh = 135
-tamanho = 5
-clock = 10
-fps = 30
+falta implementar a gasolina, a pontuação em cima e a gasolina
+"""
+
+
+
+
+import pygame
+import os
+import sys
+from pygame.locals import *
+import random
+
+global run, combustivel, pontos, fps, clock, tamanhoPixel, displaWidth,  tiros, tiro
+
+#-------------VARIÁVEIS----------#  
+displayHeight = 100
+displaWidth = 1000
+tamanhoPixel = 10
+fps = float(60)
 combustivel = 400
 pontos = 0
-vermelho = (255, 0, 0)
-verde = (0, 255, 0)
-azul = (0, 0, 255)
+run = True
+clock = pygame.time.Clock()
+tiros = []
+inimigos = []
+tanques = []
 
-running = True
+#------------CLASSES-------------#
+class Jogador:
+    def __init__(self, cor, x , y , width, height):
+        self.rect = pygame.Rect(x, y, width, height)
+        self.color = cor
+        self.speed = 5
 
+    def colisao(self, outro_rect):
+        return self.rect.colliderect(outro_rect)
+class Projeteis:
+    def __init__(self, cor, x, y, width, height):
+        self.rect = pygame.Rect(x,y,width,height)
+        self.color = cor
+        self.speed = 5
+        self.rect.x = self.rect.x+self.speed
+
+    def colisao(self, outro_rect):
+        return self.rect.colliderect(outro_rect)
+    
+class Inimigos:
+    def __init__(self,cor, y):
+        self.rect = pygame.Rect(1330, y, 10, 10)
+        self.color = cor
+        self.speed = 5
+        self.rect.x = self.rect.x - self.speed
+#------------FUNÇÕES-------------#
+def Start():
+    os.system('cls||clear')
+    escolha = input("Window Invaders! \nBem vindo, jogador!\nPressione enter para prosseguir...")
+    if escolha == "":
+        Menu()
+    else:
+        Start()      
 def Menu():
-        print("1 - Jogar")
-        print("2 - Configuracoes")
-        print("3 - Rankings")
-        print("4 - Instrucoes")
-        print("5 - Sair")
-        input("Escolha uma opcao")
-
-match Menu():
-    case 1: Jogo()
-    case 2: Configuracoes()
-    case 3: ranking()
-    case 4: Instrucoes()
-    case 5: Exit()
+    os.system('cls||clear')
+    print("1 - Jogar")
+    print("2 - Configuracoes")
+    print("3 - Rankings")
+    print("4 - Instrucoes")
+    print("5 - Sair")
+    escolha = input("Escolha uma opção: ")
     
-def Exit():
-    sys.exit()
+    match escolha:
+        case "1": Jogo()
+        case "2": Config() # ainda a ser implementada
+        case "3": Ranking() # ainda a ser implementada
+        case "4": Instrucoes()
+        case "5": Sair() # ainda a ser implementada
+def Instrucoes():
+    os.system('cls||clear')
+    print("Instruções")
+    escolha = input("Pressione 'enter' para voltar...")
+    if escolha == "":
+        Menu()
+    else:
+        Instrucoes()
+def Gameover():
+    global run
     
-
-
+    os.system('cls||clear')
+    print("O inimigo chegou até você! Não deixe acontecer novamente...\n1 - Reiniciar\n2 - Voltar para o menu")
+    escolha = input("Escolha uma opção: ")
+    match escolha:
+        case "1":
+            run = True
+            Jogo()
+        case "2": 
+            run = True
+            Menu()
+def Tiro():
+    global linha, tiro, combustivel, tiros
+    
+    linha = jogador.rect.x
+    combustivel -= 3
+    tiro = Projeteis((0,100,0), linha, jogador.rect.y, 10, 10)
+    tiros.append(tiro)    
+def Inimigo():
+    inimigo = Inimigos((255, 0, 0), random.randint(0,100))
+    inimigos.append(inimigo)
+def Colisoes():
+    print()
 
 def Jogo():
-    pygame.init()
+    global run, combustivel, pontos, fps, clock, jogador, janela, tiros, inimigos, tiro, inimigos, Inimigos
     
-    #inicia a tela
-    screen = pygame.display.set_mode((displayWitdh * tamanho, displayHeight * tamanho))
-    pygame.display.set_caption('Jogo de APC')
-    clock = pygame.time.Clock()
-
-    #inicia o fundo
-    background = pygame.Surface(screen.get_size())
-    background = background.convert()
-    background.fill((250, 250, 250))
+    #inicia a tela  
+    janela = pygame.display.set_mode((displaWidth, displayHeight))
+    #inicia jogador
+    jogador = Jogador((0,255,0), 0, 50, 10, 10)
 
     
-Main()
+    
+    os.system('cls||clear')
+    print("Boa sorte")
+    
+
+    while run:
+        pygame.init()
+        
+
+        # imprime combustivel e pontuação no topo da tela #
+        #-------------------------------------------------#
+        
+        # evento de fechar a janela #
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+                inimigos.clear()
+                tiros.clear()
+                pygame.quit()
+                Gameover()
+                
+        #---------------------------#
+        
+        
+        # ações possíveis do jogador #
+            elif event.type == pygame.KEYDOWN:
+                if event.key==120:
+                    Tiro()
+
+        key = pygame.key.get_pressed()
+        if key[pygame.K_w] == True:
+            jogador.rect.y = jogador.rect.y - jogador.speed
+
+        elif key[pygame.K_s] == True:
+            jogador.rect.y = jogador.rect.y + jogador.speed
+        #----------------------------#
+        
+        # Cria inimigos e tanques de combustivel #
+        chance = random.randint(0, 30)
+        if chance == 10:
+            Inimigo()
+        #----------------------------------------#
+        
+        # Detecta colisões #
+        for inimigo in inimigos:
+            if jogador.colisao(inimigo.rect):
+                run = False
+                inimigos.clear()
+                tiros.clear()
+                pygame.quit()
+                Gameover()   
+        
+        for tiro in tiros:
+            for inimigo in inimigos:
+                if tiro.colisao(inimigo.rect):
+
+                    inimigos.remove(inimigo)
+                    tiros.remove(tiro)
+            
+        #if combustivel.colliderect(jogador):
+        #    combustivel += 40
+            
+        if jogador.rect.top <= 0:
+            jogador.rect.top = 0
+        if jogador.rect.bottom >= displayHeight:
+            jogador.rect.bottom = displayHeight
+        #------------------#
+        
+        # atualiza a tela, inimigos, projeteis, personagem e combustiveis #
+        combustivel -= 1
+        
+        pygame.draw.rect(janela, (0, 255, 0), jogador)
+        
+        for inimigo in inimigos:
+            pygame.draw.rect(janela, (255, 0 ,0), inimigo)
+            inimigo.speed = 5
+            inimigo.rect.x = inimigo.rect.x - inimigo.speed
+        
+        for tiro in tiros:
+            pygame.draw.rect(janela, (0, 100, 0), tiro)
+            tiro.speed = 5
+            tiro.rect.x = tiro.rect.x + tiro.speed
+        
+        pygame.display.flip()
+        janela.fill(pygame.Color('grey'))
+        fps = float(fps) + float(0.01)
+        clock.tick(fps)   
+        #-----------------#
+        
+        print(combustivel)
+        # Checa a quantidade de combustível #
+        if combustivel == 0:
+            inimigos.clear()
+            tiros.clear()
+            pygame.quit()
+            Gameover()
+
+Start()
+
+
