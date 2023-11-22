@@ -19,9 +19,7 @@ import sys
 from pygame.locals import *
 import random
 
-global run, combustivel, pontos, fps, clock, tamanhoPixel, displaWidth,  tiros, tiro, probabilidadeInimigo, probabilidadeTanque
-
-#-------------VARIÁVEIS----------#  
+# -------------VARIÁVEIS----------#
 displayHeight = 500
 displaWidth = 1080
 tamanhoPixel = 20
@@ -29,7 +27,7 @@ fps = float(50)
 combustivel = 400
 probabilidadeInimigo = 30
 probabilidadeTanque = 60
-velocidade = 2 #velocidade do jogo
+velocidade = 2  # velocidade do jogo
 pontos = 0
 run = True
 clock = pygame.time.Clock()
@@ -37,9 +35,9 @@ qntTiros = []
 qntInimigos = []
 qntTanquesCombustivel = []
 
-#------------CLASSES-------------#
+# ------------CLASSES-------------#
 class Jogador:
-    def __init__(self, cor, x , y , width, height):
+    def __init__(self, cor, x, y, width, height):
         self.rect = pygame.Rect(x, y, width, height)
         self.color = cor
         self.speed = velocidade + 1
@@ -49,10 +47,10 @@ class Jogador:
 
 class Projeteis:
     def __init__(self, cor, x, y, width, height):
-        self.rect = pygame.Rect(x,y,width,height)
+        self.rect = pygame.Rect(x, y, width, height)
         self.color = cor
         self.speed = velocidade
-        self.rect.x = self.rect.x+self.speed
+        self.rect.x = self.rect.x + self.speed
 
     def colisao(self, outro_rect):
         return self.rect.colliderect(outro_rect)
@@ -71,14 +69,47 @@ class Inimigos:
         self.speed = velocidade
         self.rect.x = self.rect.x - self.speed
 
-#------------FUNÇÕES-------------#
+# ------------FUNÇÕES-------------#
+def ResetGame():
+    global run, combustivel, pontos, fps, clock, jogador, janela, qntTiros, qntInimigos, tiro, qntInimigos, probabilidadeInimigo, probabilidadeTanque, unidadeCombustivel, qntTanquesCombustivel
+
+    # reinicia todas as variáveis globais #
+    global displayHeight, displaWidth, tamanhoPixel, fps, combustivel, probabilidadeInimigo, probabilidadeTanque, velocidade, pontos, run, clock, qntTiros, qntInimigos, qntTanquesCombustivel
+    displayHeight = 500
+    displaWidth = 1080
+    tamanhoPixel = 20
+    fps = float(50)
+    combustivel = 400
+    probabilidadeInimigo = 30
+    probabilidadeTanque = 60
+    velocidade = 2
+    pontos = 0
+    run = True
+    clock = pygame.time.Clock()
+    qntTiros = []
+    qntInimigos = []
+    qntTanquesCombustivel = []
+
+    # reinicia objetos específicos 
+    jogador = Jogador((0, 255, 0), 5, 50, tamanhoPixel, tamanhoPixel)
+
+    # reinicia a janela
+    janela = pygame.display.set_mode((displaWidth, displayHeight))
+
+    # reinicialize o jogo
+    pygame.init()
+    pygame.font.init()
+    pygame.display.set_caption("Window Invaders")
+    font = pygame.font.Font(None, 24)
+
 def Start():
     os.system('cls||clear')
-    escolha = input("Window Invaders! \nBem vindo, jogador!\nPressione enter para prosseguir...")
+    escolha = input("Window Invaders! \nBem-vindo, jogador!\nPressione enter para prosseguir...")
     if escolha == "":
         Menu()
     else:
-        Start()      
+        Start()
+
 def Menu():
     os.system('cls||clear')
     print("1 - Jogar")
@@ -87,34 +118,39 @@ def Menu():
     print("4 - Instrucoes")
     print("5 - Sair")
     escolha = input("Escolha uma opção: ")
-    
+
     match escolha:
         case "1": Jogo()
-        case "2": Config() # ainda a ser implementada
-        case "3": Ranking() # ainda a ser implementada
+        case "2": Config()  # ainda a ser implementada
+        case "3": Ranking()  # ainda a ser implementada
         case "4": Instrucoes()
-        case "5": Sair() # ainda a ser implementada
+        case "5": Sair()  # ainda a ser implementada
+
 def Instrucoes():
     os.system('cls||clear')
-    print("Bem vindo ao windows invaders!\n- O jogo é bem simples, você é o personagem verde que está tentando sobreviver aos ataques dos inimigos vermelhos.\n- Se movimente para cima e para baixo com as teclas 'W' e 'S', respectivamente, para desviar dos ataques.\nNão deixe os inimigos encostarem em você!\n- Pressione 'X' para disparar um projétil que é capaz de destruir os inimigos!\n- O seu combustível vai gradualmente acabando com o decorrer do tempo, então toda vez que você tiver a oportunidade,\npegue os tanques azuis de combustível que regeneram em 40 pontos sua capacidade!\n- Cada inimigo que você derrotar são mais 50 pontos para sua pontuação, então trate de eliminar o máximo que você for capaz!\n\nBoa sorte, e não se esqueça que, quanto mais tempo se passa, mais rápida e dinâmica a batalha fica. Tome cuidado!\n")
+    print("Bem-vindo ao windows invaders!\n- O jogo é bem simples, você é o personagem verde que está tentando sobreviver aos ataques dos inimigos vermelhos.\n- Se movimente para cima e para baixo com as teclas 'W' e 'S', respectivamente, para desviar dos ataques.\nNão deixe os inimigos encostarem em você!\n- Pressione 'X' para disparar um projétil que é capaz de destruir os inimigos!\n- O seu combustível vai gradualmente acabando com o decorrer do tempo, então toda vez que você tiver a oportunidade,\npegue os tanques azuis de combustível que regeneram em 40 pontos sua capacidade!\n- Cada inimigo que você derrotar são mais 50 pontos para sua pontuação, então trate de eliminar o máximo que você for capaz!\n\nBoa sorte, e não se esqueça que, quanto mais tempo se passa, mais rápida e dinâmica a batalha fica. Tome cuidado!\n")
     escolha = input("Pressione 'enter' para voltar...")
     if escolha == "":
         Menu()
     else:
         Instrucoes()
+
 def Tiro():
     global linha, tiro, combustivel, qntTiros
-    
+
     linha = jogador.rect.x
     combustivel -= 3
-    tiro = Projeteis((0,100,0), linha, jogador.rect.y, tamanhoPixel, tamanhoPixel)
-    qntTiros.append(tiro)    
+    tiro = Projeteis((0, 100, 0), linha, jogador.rect.y, tamanhoPixel, tamanhoPixel)
+    qntTiros.append(tiro)
+
 def Inimigo():
-    inimigo = Inimigos(random.randint(30,displayHeight))
+    inimigo = Inimigos(random.randint(30, displayHeight))
     qntInimigos.append(inimigo)
+
 def Combustivel():
-    unidadadeCombustivel = TanquesCombustivel(random.randint(30,displayHeight))
+    unidadadeCombustivel = TanquesCombustivel(random.randint(30, displayHeight))
     qntTanquesCombustivel.append(unidadadeCombustivel)
+
 def Jogo():
     global run, combustivel, pontos, fps, clock, jogador, janela, qntTiros, qntInimigos, tiro, qntInimigos, probabilidadeInimigo, probabilidadeTanque, unidadeCombustivel, qntTanquesCombustivel
         
@@ -231,7 +267,7 @@ def Jogo():
         #-----------------------------------#
 def GameoverMorte():
     global run, combustivel, pontos, fps, qntTanquesCombustivel, qntTiros, qntInimigos
-    
+
     os.system('cls||clear')
     print("O inimigo chegou até você! Não deixe acontecer novamente...")
     print(f'Sua pontuação foi de {pontos} ponto(s), parabéns!')
@@ -242,15 +278,17 @@ def GameoverMorte():
     qntInimigos.clear()
     qntTiros.clear()
     qntTanquesCombustivel.clear()
-    
+
     escolha = input("Escolha uma opção: ")
     match escolha:
         case "1":
+            ResetGame()
             run = True
             Jogo()
-        case "2": 
+        case "2":
             run = True
             Menu()
+
 def GameoverCombustivel():
     global run, combustivel, pontos, fps, qntTanquesCombustivel, qntTiros, qntInimigos
     
@@ -269,6 +307,7 @@ def GameoverCombustivel():
     escolha = input("Escolha uma opção: ")
     match escolha:
         case "1":
+            ResetGame()
             run = True
             Jogo()
         case "2": 
@@ -292,6 +331,7 @@ def GameoverQuit():
     escolha = input("Escolha uma opção: ")
     match escolha:
         case "1":
+            ResetGame()            
             run = True
             Jogo()
         case "2": 
@@ -301,5 +341,6 @@ def Sair():
     os.system('cls||clear')
     sys.exit()
 Start()
+
 
 
