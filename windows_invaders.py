@@ -21,7 +21,7 @@ import random
 
 # -------------VARIÁVEIS----------#
 displayHeight = 500
-displaWidth = 1080
+displaWidth = 1920
 tamanhoPixel = 20
 fps = float(50)
 combustivel = 400
@@ -75,13 +75,13 @@ def ResetGame():
 
     # reinicia todas as variáveis globais #
     global displayHeight, displaWidth, tamanhoPixel, fps, combustivel, probabilidadeInimigo, probabilidadeTanque, velocidade, pontos, run, clock, qntTiros, qntInimigos, qntTanquesCombustivel
-    displayHeight = 500
-    displaWidth = 1080
-    tamanhoPixel = 20
+    displayHeight = displayHeight
+    displaWidth = displaWidth
+    tamanhoPixel = tamanhoPixel
     fps = float(50)
     combustivel = 400
-    probabilidadeInimigo = 30
-    probabilidadeTanque = 60
+    probabilidadeInimigo = probabilidadeInimigo
+    probabilidadeTanque = probabilidadeTanque
     velocidade = 2
     pontos = 0
     run = True
@@ -91,7 +91,7 @@ def ResetGame():
     qntTanquesCombustivel = []
 
     # reinicia objetos específicos 
-    jogador = Jogador((0, 255, 0), 5, 50, tamanhoPixel, tamanhoPixel)
+    jogador = Jogador((0, 255, 0), 5, (displayHeight / 2), tamanhoPixel, tamanhoPixel)
 
     # reinicia a janela
     janela = pygame.display.set_mode((displaWidth, displayHeight))
@@ -341,6 +341,7 @@ def Sair():
     os.system('cls||clear')
     sys.exit()
 Start()
+
 
 
 
