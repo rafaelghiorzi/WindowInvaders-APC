@@ -57,14 +57,14 @@ class Projeteis:
 
 class TanquesCombustivel:
     def __init__(self, y):
-        self.rect = pygame.Rect(1330, y, tamanhoPixel, tamanhoPixel)
+        self.rect = pygame.Rect(displaWidth, y, tamanhoPixel, tamanhoPixel)
         self.color = (0, 0, 255)
         self.speed = velocidade
         self.rect.x = self.rect.x - self.speed
 
 class Inimigos:
     def __init__(self, y):
-        self.rect = pygame.Rect(1330, y, tamanhoPixel, tamanhoPixel)
+        self.rect = pygame.Rect(displaWidth, y, tamanhoPixel, tamanhoPixel)
         self.color = (0, 255, 0)
         self.speed = velocidade
         self.rect.x = self.rect.x - self.speed
