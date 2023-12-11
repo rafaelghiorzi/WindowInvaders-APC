@@ -24,20 +24,17 @@ import json
 # -------------VARIÁVEIS----------#
 displayHeight = 500
 displayWidth = 1000
-tamanhoPixel = 20
+tamanhoPixel = 22
 fps = float(50)
-
 combustivel = 400
 pontos = 0
-
-probabilidadeX = 40 # 1 até 4, 25% de chance
-probabilidadeF = 100# 10% de chance
-probabilidadeO = 1000 # 1% de chance
+probabilidadeX = 40
+probabilidadeF = 100
+probabilidadeO = 1000
 probabilidadeT = 250
-vidaO = 10 #cada tiro dá 5
-municaoT = 5 #quantos tiros pode dar
-
-velocidade = 2  # velocidade do jogo
+vidaO = 10
+municaoT = 5 
+velocidade = 2
 
 modoRanqueado = False
 run = True
@@ -110,7 +107,9 @@ class criaInimigosT: #atira e pode colidir com o jogador, tiro mais rápido
         self.rect.x = self.rect.x - self.speed
         self.municao = municaoT
         self.direcao = 1
-        
+#---------------------------------#
+
+      
 # ------------FUNÇÕES-------------#
 def Start():
     os.system('cls||clear')
@@ -177,6 +176,8 @@ def Rankings():
 
     input("Pressione Enter para voltar ao menu...")
     Menu()
+#---------------------------------#
+
 #--------------- FUNÇÕES DAS CONFIGURAÇÕES ---------------#
 def Config():
     os.system('cls||clear')
@@ -204,14 +205,27 @@ def Tabuleiro():
     
     print("Selecione o tamanho do tabuleiro da seguinte forma (TamanhoX TamanhoY):")
     print(f'O tamanho atual é de {displayWidth} por {displayHeight}')
-    escolhaX, escolhaY = input("Digite as medidas para qual você deseja alterar:\n").split()
-    displayWidth = int(escolhaX)
-    displayHeight = int(escolhaY)
-    time.sleep(1)
-    print("Escolha salva! voltando para as configurações...")
-    time.sleep(2)
-    Config()
-    
+    escolha = input("Digite as medidas para qual você deseja alterar:\n")
+    escolha_split = escolha.split()
+
+    if len(escolha_split) == 2:
+        escolhaX, escolhaY = escolha_split
+        try:
+            displayWidth = int(escolhaX)
+            displayHeight = int(escolhaY)
+            time.sleep(0.5)
+            print("Escolha salva! Voltando para as configurações...")
+            time.sleep(1)
+            Config()
+        except Exception:
+            print("Formato incorreto, tente novamente")
+            time.sleep(2)
+            Tabuleiro()
+    else:
+        print("Formato incorreto. Tente novamente.")
+        time.sleep(2)
+        Tabuleiro()
+
 def NPCs():
     global probabilidadeF, probabilidadeO, probabilidadeT, probabilidadeX,vidaO, municaoT
     os.system('cls||clear')
@@ -220,38 +234,66 @@ def NPCs():
         time.sleep(3)
         Menu()
         
-    print("Selecione a chance de aparecer todos os respectivos personagens do jogo, a chance é de 0 a 100,\nsendo 0 a 25 fácil, 25 a 60 média dificuldade, 60 a 100 é difícil")
-    escolha = input("Selecione a probabilidadeX (de aparecer inimigos vermelhos):\n")
-    probabilidadeX = int(escolha)
+    print("Selecione a chance de aparecer todos os respectivos personagens do jogo.")
+    print("Lembrando que quanto maior o número, menor a chance de surgir um inimigo")
+    escolha = input(f"Selecione a probabilidade de aparecer inimigos vermelhos (atualmente 1 em {probabilidadeX}):\n")
+    try: 
+        probabilidadeX = int(escolha)
+    except Exception:
+        print("Algo deu errado, tente novamente")
+        time.sleep(1)
+        NPCs()
     print("Ok! passando para o próximo NPC...")
     time.sleep(1)
     
     os.system('cls||clear')
-    escolha = input("Ótimo, agora selecione a probabilidadeF (de aparecer tanques de combustível):\n")
-    probabilidadeF = int(escolha)
+    escolha = input(f"Ótimo, agora selecione a probabilidade de aparecer tanques de combustível (atualmente 1 em {probabilidadeF}):\n")
+    try: 
+        probabilidadeF = int(escolha)
+    except Exception:
+        print("Algo deu errado, tente novamente")
+        time.sleep(1)
+        NPCs()
     print("Ok! passando para o próximo NPC...")
     time.sleep(1)
     
     os.system('cls||clear')
-    escolha = input("Ótimo, agora selecione a probabilidadeO (de aparecer inimigos laranjas):\n")
-    probabilidadeO = int(escolha)
+    escolha = input(f"Ótimo, agora selecione a probabilidade de aparecer inimigos laranjas (atualmente 1 em {probabilidadeO}):\n")
+    try: 
+        probabilidadeO = int(escolha)
+    except Exception:
+        print("Algo deu errado, tente novamente")
+        time.sleep(1)
+        NPCs()
     print("Ok! passando para o próximo NPC...")
     time.sleep(1)
     
     os.system('cls||clear')
-    escolha = input("Ótimo, agora selecione a probabilidadeT (de aparecer inimigos vermelho escuro):\n")
-    probabilidadeT = int(escolha)
-    print("Ok! Agora veremos as qualidadades dos inimigos...")
+    escolha = input(f"Ótimo, agora selecione a probabilidade de aparecer inimigos vermelho escuro (atualmente 1 em {probabilidadeT}):\n")
+    try: 
+        probabilidadeX = int(escolha)
+    except Exception:
+        print("Algo deu errado, tente novamente")
+        time.sleep(1)
+        NPCs()
+    print("Ok! Passando para as qualidades dos NPCs...")
     time.sleep(1)
     
     os.system('cls||clear')
     escolha = input("Qual deve ser a vida do inimigo laranja? Lembrando que cada tiro seu dá 5 de dano cada:\n")
-    vidaO = int(escolha)
+    try:
+        vidaO = int(escolha)
+    except Exception:
+        print("Algo deu errado, tente novamente")
+        NPCs()
     print("Ok!")
     time.sleep(1)
     print("")
     escolha = input("E qual deve ser a munição do inimigo vermelho escuro? Lembrando que o padrão é de 5 tiros cada um:\n")
-    municaoT = int(escolha)
+    try:
+        municaoT = int(escolha)
+    except Exception:
+        print("Algo deu errado, tente novamente")
     print("Ok! Todas as configurações foram aplicadas! Voltando para as configurações...")
     time.sleep(1)
     Config()
@@ -280,14 +322,12 @@ def ModoRanqueado():
             probabilidadeO = 500 # 1% de chance
             probabilidadeT = 250  # 4% de chance
             municaoT = 7
-            vidaO = 15
-            
-            
+            vidaO = 15              
         else:
             ModoRanqueado()
-        print("Salvando sua escolha e voltando para as configurações...")
-        time.sleep(2)    
-        Config()
+        print("Salvando sua escolha e voltando para o menu...")
+        time.sleep(1)    
+        Menu()
         
     if modoRanqueado == False:
         os.system('cls||clear')
@@ -312,9 +352,9 @@ def ModoRanqueado():
             municaoT = 5 #quantos tiros pode dar
         else:
             ModoRanqueado()
-        print("Salvando sua escolha e voltando para as configurações...")
-        time.sleep(2)
-        Config()
+        print("Salvando sua escolha e voltando para o menu...")
+        time.sleep(1)
+        Menu()
 #---------------------------------------------------------#
 
 #--------------- FUNÇÕES DE FUNCIONAMENTO DO JOGO --------#
@@ -377,6 +417,7 @@ def InimigoT():
 def Combustivel():
     unidadadeCombustivel = TanquesCombustivel(random.randint(30, displayHeight))
     qntTanquesCombustivel.append(unidadadeCombustivel)
+#---------------------------------------------------------#
 
 #------------------ MAIN -----------------------------#
 def Jogo():
@@ -419,14 +460,19 @@ def Jogo():
     while run:
 
         # imprime combustivel e pontuação no topo da tela e modo ranqueado se estiver ativo#
-        pontuacao = font.render(f'Pontuação: {pontos}', True, (0, 0, 0))
-        nivelCombustivel = font.render(f'Combustível: {combustivel}', True, (0,0,0))
+        if combustivel < 150:
+            nivelCombustivel = font.render(f'Combustível: {combustivel}', True, (200, 0,00))
+            janela.blit(nivelCombustivel, (10, 10))
+        else:
+            nivelCombustivel = font.render(f'Combustível: {combustivel}', True, (0,0,0))
+            janela.blit(nivelCombustivel, (10, 10)) 
+            
+        pontuacao = font.render(f'Pontuação: {pontos}', True, (0, 0, 0))       
         janela.blit(pontuacao, (displayWidth - 140 , 10))
-        janela.blit(nivelCombustivel, (10, 10))
         
         if modoRanqueado == True:
             avisoRanqueado = font.render(f'Modo Ranqueado', True, (0,0,0))
-            janela.blit(avisoRanqueado, ((displayWidth/2) - 5, 10))
+            janela.blit(avisoRanqueado, ((displayWidth/2) - 15, 10))
         #-------------------------------------------------#
         
         # evento de fechar a janela #
@@ -578,7 +624,7 @@ def Jogo():
         
 
         # atualiza a tela, inimigos, projeteis, personagem e combustiveis #
-        chance = random.randint(0, 5)                             
+        chance = random.randint(0, 7)                             
         if chance == 3:
             combustivel -= 1
         
@@ -595,7 +641,7 @@ def Jogo():
         for inimigo in qntInimigosT:
             pygame.draw.rect(janela, (128, 0, 0), inimigo)
             inimigo.rect.x = inimigo.rect.x - inimigo.speed
-            inimigo.rect.y += inimigo.speed * inimigo.direcao
+            inimigo.rect.y += (inimigo.speed * inimigo.direcao) * 0.75
             
             chance = random.randint(0,50)
             if chance == 1:
@@ -685,7 +731,9 @@ def GameOverTiro():
             Menu()
         case "3":
             run = True
-            Rankings()  
+            Rankings() 
+        case _:
+            GameOverTiro()
 def GameoverMorte():
     global run, combustivel, pontos, fps, qntTanquesCombustivel, qntTirosJogador, qntInimigos, nickname
 
@@ -713,7 +761,9 @@ def GameoverMorte():
             Menu()
         case "3":
             run = True
-            Rankings()  
+            Rankings() 
+        case _:
+            GameoverMorte()        
 def GameoverCombustivel():
     global run, combustivel, pontos, fps, qntTanquesCombustivel, qntTirosJogador, qntInimigos
     
@@ -739,7 +789,9 @@ def GameoverCombustivel():
             Menu()
         case "3":
             run = True
-            Rankings()        
+            Rankings()    
+        case _:
+            GameoverCombustivel()    
 def GameoverQuit():
     global run, combustivel, pontos, fps, qntTanquesCombustivel, qntTirosJogador, qntInimigos
     
@@ -765,13 +817,16 @@ def GameoverQuit():
             Menu()
         case "3":
             run = True
-            Rankings()            
+            Rankings() 
+        case _:
+            GameoverQuit()           
 def Sair():
     os.system('cls||clear')
     sys.exit()
+#-----------------------------------------------------------------------------------#
 
 
 
-
-#inicia tudo
+#inicia tudo#
 Start()
+#-----------#
