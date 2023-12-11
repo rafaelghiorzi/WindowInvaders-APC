@@ -304,6 +304,8 @@ def ModoRanqueado():
         os.system('cls||clear')
         escolha = input("Desativar modo ranqueado? (s/n):\n")
         if escolha == "s":
+            displayHeight = 500
+            displayWidth = 1000
             modoRanqueado = False
             probabilidadeX = 40 # 1 até 4, 25% de chance
             probabilidadeF = 100# 10% de chance
@@ -316,7 +318,7 @@ def ModoRanqueado():
         elif escolha == "n":
             modoRanqueado = True
             displayHeight = 400
-            displayWidth = 1350
+            displayWidth = 1100
             probabilidadeX = 60 # 1 até 4, 25% de chance
             probabilidadeF = 150 # 10% de chance
             probabilidadeO = 500 # 1% de chance
@@ -343,6 +345,8 @@ def ModoRanqueado():
             municaoT = 7
             vidaO = 15
         elif escolha == "n":
+            displayHeight = 500
+            displayWidth = 1000
             modoRanqueado = False
             probabilidadeX = 60 # 1 até 4, 25% de chance
             probabilidadeF = 100# 10% de chance
@@ -449,7 +453,7 @@ def Jogo():
     #inicia a tela  
     janela = pygame.display.set_mode((displayWidth, displayHeight))
     #inicia jogador
-    jogador = Jogador((0,255,0), 5, 50, tamanhoPixel, tamanhoPixel)
+    jogador = Jogador((0,200,0), 5, 50, tamanhoPixel, tamanhoPixel)
     #Configurações iniciais
     pygame.init()
     pygame.font.init()
@@ -464,15 +468,15 @@ def Jogo():
             nivelCombustivel = font.render(f'Combustível: {combustivel}', True, (200, 0,00))
             janela.blit(nivelCombustivel, (10, 10))
         else:
-            nivelCombustivel = font.render(f'Combustível: {combustivel}', True, (0,0,0))
+            nivelCombustivel = font.render(f'Combustível: {combustivel}', True, (255,255,255))
             janela.blit(nivelCombustivel, (10, 10)) 
             
-        pontuacao = font.render(f'Pontuação: {pontos}', True, (0, 0, 0))       
+        pontuacao = font.render(f'Pontuação: {pontos}', True, (255, 255, 255))       
         janela.blit(pontuacao, (displayWidth - 140 , 10))
         
         if modoRanqueado == True:
-            avisoRanqueado = font.render(f'Modo Ranqueado', True, (0,0,0))
-            janela.blit(avisoRanqueado, ((displayWidth/2) - 15, 10))
+            avisoRanqueado = font.render(f'Modo Ranqueado', True, (255, 255, 255))
+            janela.blit(avisoRanqueado, ((displayWidth/2) - 40, 10))
         #-------------------------------------------------#
         
         # evento de fechar a janela #
@@ -628,10 +632,10 @@ def Jogo():
         if chance == 3:
             combustivel -= 1
         
-        pygame.draw.rect(janela, (0, 255, 0), jogador)
+        pygame.draw.rect(janela, (0, 200, 0), jogador)
         
         for inimigo in qntInimigosX:
-            pygame.draw.rect(janela, (255, 0 ,0), inimigo)
+            pygame.draw.rect(janela, (220, 0 ,0), inimigo)
             inimigo.rect.x = inimigo.rect.x - inimigo.speed
         
         for inimigo in qntInimigosO:
@@ -650,7 +654,7 @@ def Jogo():
                 inimigo.direcao = 1
                     
         for tiro in qntTirosJogador:
-            pygame.draw.rect(janela, (0, 100, 0), tiro)
+            pygame.draw.rect(janela, (0, 100, 50), tiro)
             tiro.rect.x = tiro.rect.x + tiro.speed + 3
             
         for tiro in qntTirosInimigo:
@@ -662,7 +666,7 @@ def Jogo():
             unidadeCombustivel.rect.x = unidadeCombustivel.rect.x - unidadeCombustivel.speed
             
         pygame.display.flip()
-        janela.fill(pygame.Color('grey'))
+        janela.fill(pygame.Color(100,100,100))
         fps = float(fps) + float(0.01)
         clock.tick(fps)   
         #-----------------#
