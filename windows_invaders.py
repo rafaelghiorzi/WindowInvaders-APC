@@ -139,7 +139,7 @@ def Menu():
 
 def Instrucoes():
     os.system('cls||clear')
-    print("Bem-vindo ao windows invaders!\n- O jogo é bem simples, você é o personagem verde que está tentando sobreviver aos ataques dos inimigos vermelhos.\n- Se movimente para cima e para baixo com as teclas 'W' e 'S', respectivamente, para desviar dos ataques.\nNão deixe os inimigos encostarem em você!\n- Pressione 'X' para disparar um projétil que é capaz de destruir os inimigos!\n- O seu combustível vai gradualmente acabando com o decorrer do tempo, então toda vez que você tiver a oportunidade,\npegue os tanques azuis de combustível que regeneram em 40 pontos sua capacidade!\n- Cada inimigo que você derrotar são mais 50 pontos para sua pontuação, então trate de eliminar o máximo que você for capaz!\n\nBoa sorte, e não se esqueça que, quanto mais tempo se passa, mais rápida e dinâmica a batalha fica. Tome cuidado!\n")
+    print("Bem vindo ao Window invaders!\nSua missão é sobreviver o máximo de tempo na arena enquanto elimina inimigos que tentam de matar!\nMova-se para cima e para baixo usando 'W' e 'S' e atire usando 'X'\nExistem 4 elementos que surgem no mapa:\n- O inimigo vermelho apenas anda em sua direção e eliminá-lo você ganha 50 pontos\n- O inimigo laranja não atira e não te mata, ele tem mais vida que o inimigo normal e ao matá-lo, todos os inimigos vermelhos do mapa são eliminados\n- O inimigo vermelho escuro se move na sua direção e para cima e para baixo. Ele tem 5 munições que ele atira aleatoriamente na sua direção. Desvie do inimigo e do tiro ou atire contra ele, os dois funcionam!\n\nVocê pode ativar o modo ranqueado para salvar sua pontuação no placar ou apenas jogar casualmente.\nSeu combustível acaba gradualmente. Pegue os tanques azuis para repor 40 pontos de combustível por vez.\n\nBoa sorte na sua jornada!\n")
     escolha = input("Pressione 'enter' para voltar...")
     if escolha == "":
         Menu()
@@ -183,7 +183,7 @@ def Config():
     print("Selecione as configurações que deseja mudar")
     print("1 - Tabuleiro")
     print("2 - NPCs")
-    print("3 - Ativar/desativar modo ranqueado")
+    print(f'3 - {"Ativar" if modoRanqueado == False else "Desativar" } modo ranqueado')
     print("4 - Voltar")
     escolha = input("Escolha uma opção: ")
         
@@ -197,6 +197,11 @@ def Config():
 def Tabuleiro():
     global displayWidth, displayHeight
     os.system('cls||clear')
+    if modoRanqueado == True:
+        print("Você não pode alterar o tamanho do tabuleiro no modo ranqueado!\nVoltando para o menu...")
+        time.sleep(3)
+        Menu()
+    
     print("Selecione o tamanho do tabuleiro da seguinte forma (TamanhoX TamanhoY):")
     print(f'O tamanho atual é de {displayWidth} por {displayHeight}')
     escolhaX, escolhaY = input("Digite as medidas para qual você deseja alterar:\n").split()
@@ -210,6 +215,11 @@ def Tabuleiro():
 def NPCs():
     global probabilidadeF, probabilidadeO, probabilidadeT, probabilidadeX,vidaO, municaoT
     os.system('cls||clear')
+    if modoRanqueado == True:
+        print("Você não pode as propriedades dos NPCs no modo ranqueado!\nVoltando para o menu...")
+        time.sleep(3)
+        Menu()
+        
     print("Selecione a chance de aparecer todos os respectivos personagens do jogo, a chance é de 0 a 100,\nsendo 0 a 25 fácil, 25 a 60 média dificuldade, 60 a 100 é difícil")
     escolha = input("Selecione a probabilidadeX (de aparecer inimigos vermelhos):\n")
     probabilidadeX = int(escolha)
@@ -253,12 +263,10 @@ def ModoRanqueado():
         escolha = input("Desativar modo ranqueado? (s/n):\n")
         if escolha == "s":
             modoRanqueado = False
-            probabilidadeX = 50
-            probabilidadeF = 50
-            probabilidadeO = 50
-            probabilidadeT = 50
-            displayHeight = 500
-            displayWidth = 1920
+            probabilidadeX = 40 # 1 até 4, 25% de chance
+            probabilidadeF = 100# 10% de chance
+            probabilidadeO = 1000 # 1% de chance
+            probabilidadeT = 250
             vidaO = 10 #cada tiro dá 5
             municaoT = 5 #quantos tiros pode dar
             
@@ -267,12 +275,12 @@ def ModoRanqueado():
             modoRanqueado = True
             displayHeight = 400
             displayWidth = 1350
-            probabilidadeX = 4 # 1 até 4, 25% de chance
-            probabilidadeF = 10 # 10% de chance
-            probabilidadeO = 100 # 1% de chance
-            probabilidadeT = 25  # 4% de chance
-            municaoT = 5
-            vidaO = 10
+            probabilidadeX = 60 # 1 até 4, 25% de chance
+            probabilidadeF = 150 # 10% de chance
+            probabilidadeO = 500 # 1% de chance
+            probabilidadeT = 250  # 4% de chance
+            municaoT = 7
+            vidaO = 15
             
             
         else:
@@ -288,20 +296,18 @@ def ModoRanqueado():
             modoRanqueado = True
             displayHeight = 400
             displayWidth = 1350
-            probabilidadeX = 4 # 1 até 4, 25% de chance
-            probabilidadeF = 10 # 10% de chance
-            probabilidadeO = 100 # 1% de chance
-            probabilidadeT = 25  # 4% de chance
-            municaoT = 5
-            vidaO = 10
+            probabilidadeX = 40 # 1 até 4, 25% de chance
+            probabilidadeF = 150 # 10% de chance
+            probabilidadeO = 700 # 1% de chance
+            probabilidadeT = 250  # 4% de chance
+            municaoT = 7
+            vidaO = 15
         elif escolha == "n":
             modoRanqueado = False
-            probabilidadeX = 50
-            probabilidadeF = 50
-            probabilidadeO = 50
-            probabilidadeT = 50
-            displayHeight = 500
-            displayWidth = 1920
+            probabilidadeX = 60 # 1 até 4, 25% de chance
+            probabilidadeF = 100# 10% de chance
+            probabilidadeO = 500 # 1% de chance
+            probabilidadeT = 400
             vidaO = 10 #cada tiro dá 5
             municaoT = 5 #quantos tiros pode dar
         else:
@@ -420,7 +426,7 @@ def Jogo():
         
         if modoRanqueado == True:
             avisoRanqueado = font.render(f'Modo Ranqueado', True, (0,0,0))
-            janela.blit(avisoRanqueado, (displayWidth/2, 10))
+            janela.blit(avisoRanqueado, ((displayWidth/2) - 5, 10))
         #-------------------------------------------------#
         
         # evento de fechar a janela #
@@ -552,28 +558,28 @@ def Jogo():
             
         for inimigo in qntInimigosT:
             if inimigo.rect.top <= 30:
-                inimigo.rect.top = 30
-            if jogador.rect.bottom >= displayHeight:
-                jogador.rect.bottom = displayHeight
+                inimigo.rect.y = 30
+            if inimigo.rect.bottom >= displayHeight:
+                inimigo.rect.bottom = displayHeight
                 
         for inimigo in qntInimigosO:
-            if inimigo.rect.top <= 30:
+            if inimigo.rect.y <= 30:
                 inimigo.rect.top = 30
-            if jogador.rect.bottom >= displayHeight:
-                jogador.rect.bottom = displayHeight      
+            if inimigo.rect.bottom >= displayHeight:
+                inimigo.rect.bottom = displayHeight      
                 
         for inimigo in qntInimigosX:
             if inimigo.rect.top <= 30:
-                inimigo.rect.top = 30
-            if jogador.rect.bottom >= displayHeight:
-                jogador.rect.bottom = displayHeight  
+                inimigo.rect.y = 30
+            if inimigo.rect.bottom >= displayHeight:
+                inimigo.rect.bottom = displayHeight  
         #-----------------------------------------#
         
         
 
         # atualiza a tela, inimigos, projeteis, personagem e combustiveis #
-        chance = random.randint(0, 7)                             
-        if chance == 7:
+        chance = random.randint(0, 5)                             
+        if chance == 3:
             combustivel -= 1
         
         pygame.draw.rect(janela, (0, 255, 0), jogador)
@@ -583,7 +589,7 @@ def Jogo():
             inimigo.rect.x = inimigo.rect.x - inimigo.speed
         
         for inimigo in qntInimigosO:
-            pygame.draw.rect(janela, (255, 99, 71), inimigo)
+            pygame.draw.rect(janela, (216, 108, 0), inimigo)
             inimigo.rect.x = inimigo.rect.x - inimigo.speed        
 
         for inimigo in qntInimigosT:
@@ -626,34 +632,30 @@ def Jogo():
 
 #------------------ FINALIZAÇÃO DA RODADA E SALVAMENTO DOS DADOS -------------------#
 def registerMatch(nickname, pontos):
-    # Defina o nome do arquivo de ranking
-    ranking_file = "ranking.json"
+
+    arquivoRank = "ranking.json"
 
     try:
-        # Tentar abrir o arquivo para leitura
-        with open(ranking_file, "r") as file:
+        with open(arquivoRank, "r") as arquivo:
             try:
-                ranking = json.load(file)
+                ranking = json.load(arquivo)
             except json.JSONDecodeError:
-                # Se o arquivo estiver vazio ou não for um JSON válido, inicialize o ranking como uma lista vazia
-                with open(ranking_file, "w") as file:
+                with open(arquivoRank, "w") as arquivo:
                     ranking = [{"nickname": nickname, "pontos" : pontos}]
-                    json.dump(ranking, file)
+                    json.dump(ranking, arquivo)
     except FileNotFoundError:
-        # Se o arquivo não existir, cria um novo ranking
-        ranking = []
+        print("arquivo de ranks não encontrado!")
+        time.sleep(2)
+        Menu()
 
-    # Inserir o jogador no ranking
     ranking.append({"nickname": nickname, "pontos": pontos})
 
-    # Ordenar o ranking em ordem decrescente
     ranking = sorted(ranking, key=lambda x: x["pontos"], reverse=True)
 
     ranking = ranking[:10]
 
-    # Gravar o ranking atualizado no arquivo
-    with open(ranking_file, "w") as file:
-        json.dump(ranking, file)
+    with open(arquivoRank, "w") as arquivo:
+        json.dump(ranking, arquivo)
 
     print("Partida registrada no ranking com sucesso!")
 def GameOverTiro():
@@ -767,4 +769,9 @@ def GameoverQuit():
 def Sair():
     os.system('cls||clear')
     sys.exit()
+
+
+
+
+#inicia tudo
 Start()
