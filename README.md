@@ -7,9 +7,7 @@ first version.
 
 # How to run
 
-To open the game, simply run the "WindowsInvaders.exe" file
-and wait for the game to open and Have fun.
-The rules are all written inside the game, so there shouldn't
-be any problems undersating how to play. It's basically 
-Space Invaders but kinda different.
-Enjoy!
+To run the game, open the computer terminal (cmd for windows),
+go to the game file directory using 'cd [file destination]'
+and, with python installed, run the commmand 'python.exe window_invaders.py'
+Have fun!
