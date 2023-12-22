@@ -24,7 +24,7 @@ import json
 # -------------VARIÁVEIS----------#
 displayHeight = 500
 displayWidth = 1000
-tamanhoPixel = 22
+tamanhoPixel = 40
 fps = float(50)
 combustivel = 400
 pontos = 0
@@ -49,18 +49,22 @@ qntTanquesCombustivel = []
 
 # ------------CLASSES-------------#
 class Jogador:
-    def __init__(self, cor, x, y, width, height):
+    def __init__(self, x, y, width, height):
         self.rect = pygame.Rect(x, y, width, height)
-        self.color = cor
+        self.color = (100,100,100)
+        raw_image = pygame.image.load("./assets/jogador.png")
+        self.image = pygame.transform.scale(raw_image, (tamanhoPixel, tamanhoPixel))
         self.speed = velocidade + 1
 
     def colisao(self, outro_rect):
         return self.rect.colliderect(outro_rect)
 
 class Projeteis:
-    def __init__(self, cor, x, y, width, height):
+    def __init__(self, x, y, width, height):
         self.rect = pygame.Rect(x, y, width, height)
-        self.color = cor
+        self.color = (100,100,100)
+        raw_image = pygame.image.load("./assets/tiroamigo.png")
+        self.image = pygame.transform.scale(raw_image, (tamanhoPixel + 15, tamanhoPixel - 30))
         self.speed = velocidade
         self.rect.x = self.rect.x + self.speed
 
@@ -68,9 +72,11 @@ class Projeteis:
         return self.rect.colliderect(outro_rect)
 
 class ProjeteisInimigos: #amarelo
-    def __init__(self, cor, x, y, width, height):
+    def __init__(self, x, y, width, height):
         self.rect = pygame.Rect(x, y, width, height)
-        self.color = (255,255,0)
+        self.color = (100,100,100)
+        raw_image = pygame.image.load("./assets/tiroinimigo.png")
+        self.image = pygame.transform.scale(raw_image, (tamanhoPixel + 15, tamanhoPixel - 30))
         self.speed = velocidade
         self.rect.x = self.rect.x - self.speed + 10
 
@@ -80,21 +86,27 @@ class ProjeteisInimigos: #amarelo
 class TanquesCombustivel:
     def __init__(self, y):
         self.rect = pygame.Rect(displayWidth, y, tamanhoPixel, tamanhoPixel)
-        self.color = (0, 0, 255)
+        self.color = (100,100,100)
+        raw_image = pygame.image.load("./assets/fuel.png")
+        self.image = pygame.transform.scale(raw_image, (tamanhoPixel, tamanhoPixel))
         self.speed = velocidade
         self.rect.x = self.rect.x - self.speed
 
 class criaInimigosX:
     def __init__(self, y):
         self.rect = pygame.Rect(displayWidth, y, tamanhoPixel, tamanhoPixel)
-        self.color = (0, 255, 0)
+        self.color = (100,100,100)
+        raw_image = pygame.image.load("./assets/inimigoX.png")
+        self.image = pygame.transform.scale(raw_image, (tamanhoPixel, tamanhoPixel))
         self.speed = velocidade
         self.rect.x = self.rect.x - self.speed
 
 class criaInimigosO: #anda e quando é morto apaga todos os inimigos da tela
     def __init__(self, y):
         self.rect = pygame.Rect(displayWidth, y, tamanhoPixel, tamanhoPixel)
-        self.color = (255,99,71) #laranja
+        self.color = (100,100,100)
+        raw_image = pygame.image.load("./assets/inimigoO.png")
+        self.image = pygame.transform.scale(raw_image, (tamanhoPixel, tamanhoPixel))
         self.speed = velocidade
         self.rect.x = self.rect.x - self.speed
         self.vida = vidaO
@@ -102,14 +114,15 @@ class criaInimigosO: #anda e quando é morto apaga todos os inimigos da tela
 class criaInimigosT: #atira e pode colidir com o jogador, tiro mais rápido
     def __init__(self, y):
         self.rect = pygame.Rect(displayWidth, y, tamanhoPixel, tamanhoPixel)
-        self.color = (128,0,0) # vermelho escuro
+        self.color = (100,100,100)
+        raw_image = pygame.image.load("./assets/inimigoT.png")
+        self.image = pygame.transform.scale(raw_image, (tamanhoPixel, tamanhoPixel))
         self.speed = velocidade
         self.rect.x = self.rect.x - self.speed
         self.municao = municaoT
         self.direcao = 1
 #---------------------------------#
 
-      
 # ------------FUNÇÕES-------------#
 def Start():
     os.system('cls||clear')
@@ -138,7 +151,7 @@ def Menu():
 
 def Instrucoes():
     os.system('cls||clear')
-    print("Bem vindo ao Window invaders!\nSua missão é sobreviver o máximo de tempo na arena enquanto elimina inimigos que tentam de matar!\nMova-se para cima e para baixo usando 'W' e 'S' e atire usando 'X'\nExistem 4 elementos que surgem no mapa:\n- O inimigo vermelho apenas anda em sua direção e eliminá-lo você ganha 50 pontos\n- O inimigo laranja não atira e não te mata, ele tem mais vida que o inimigo normal e ao matá-lo, todos os inimigos vermelhos do mapa são eliminados\n- O inimigo vermelho escuro se move na sua direção e para cima e para baixo. Ele tem 5 munições que ele atira aleatoriamente na sua direção. Desvie do inimigo e do tiro ou atire contra ele, os dois funcionam!\n\nVocê pode ativar o modo ranqueado para salvar sua pontuação no placar ou apenas jogar casualmente.\nSeu combustível acaba gradualmente. Pegue os tanques azuis para repor 40 pontos de combustível por vez.\n\nBoa sorte na sua jornada!\n")
+    print("Bem vindo ao Window invaders!\nSua missão é sobreviver o máximo de tempo na arena enquanto elimina inimigos que tentam de matar!\nMova-se para cima e para baixo usando 'W' e 'S' e atire usando 'X'\nExistem 4 elementos que surgem no mapa:\n- O inimigo vermelho apenas anda em sua direção e eliminá-lo você ganha 50 pontos\n- O inimigo rosa não atira e não te mata, ele tem mais vida que o inimigo normal e ao matá-lo, todos os inimigos vermelhos do mapa são eliminados\n- O inimigo vermelho escuro se move na sua direção e para cima e para baixo. Ele tem 5 munições que ele atira aleatoriamente na sua direção. Desvie do inimigo e do tiro ou atire contra ele, os dois funcionam!\n\nVocê pode ativar o modo ranqueado para salvar sua pontuação no placar ou apenas jogar casualmente.\nSeu combustível acaba gradualmente. Pegue os tanques de gasolina para repor 40 pontos de combustível por vez.\n\nBoa sorte na sua jornada!\n")
     escolha = input("Pressione 'enter' para voltar...")
     if escolha == "":
         Menu()
@@ -316,6 +329,7 @@ def ModoRanqueado():
             
             
         elif escolha == "n":
+            Nickname()
             modoRanqueado = True
             displayHeight = 400
             displayWidth = 1100
@@ -335,6 +349,7 @@ def ModoRanqueado():
         os.system('cls||clear')
         escolha = input("Ativar modo ranqueado? (s/n)\n")
         if escolha == "s":
+            Nickname()
             modoRanqueado = True
             displayHeight = 400
             displayWidth = 1350
@@ -387,7 +402,7 @@ def ResetGame():
     vidaO = vidaO
 
     # reinicia objetos específicos 
-    jogador = Jogador((0, 255, 0), 5, (displayHeight / 2), tamanhoPixel, tamanhoPixel)
+    jogador = Jogador(5, (displayHeight / 2), tamanhoPixel, tamanhoPixel)
 
     # reinicia a janela
     janela = pygame.display.set_mode((displayWidth, displayHeight))
@@ -401,9 +416,9 @@ def ResetGame():
 def Tiro():
     global linha, tiro, combustivel, qntTirosJogador
 
-    linha = jogador.rect.x
+    linha = jogador.rect.right
     combustivel -= 3
-    tiro = Projeteis((0, 100, 0), linha, jogador.rect.y, tamanhoPixel, tamanhoPixel)
+    tiro = Projeteis(linha, jogador.rect.y + 15, tamanhoPixel + 7, tamanhoPixel - 30)
     qntTirosJogador.append(tiro)
 
 def InimigoX():
@@ -421,6 +436,16 @@ def InimigoT():
 def Combustivel():
     unidadadeCombustivel = TanquesCombustivel(random.randint(30, displayHeight))
     qntTanquesCombustivel.append(unidadadeCombustivel)
+
+def Nickname():
+    global nickname
+    os.system('cls||clear')
+    nickname = input("Antes do jogo ranqueado começar, escreva seu nickname para que possamos salvar sua pontuação:\nOBS: o nome deve conter entre 1 e 10 caracteres:\n")
+    if len(nickname) < 1 or len(nickname) > 10:
+        print("nome inválido, tente novamente!")
+        time.sleep(2)
+        Nickname()
+        return
 #---------------------------------------------------------#
 
 #------------------ MAIN -----------------------------#
@@ -428,32 +453,16 @@ def Jogo():
     global run, combustivel, pontos, fps, clock, jogador, janela, qntTirosJogador, qntInimigos, tiro, qntInimigos, unidadeCombustivel, qntTanquesCombustivel, modoRanqueado, nickname
 
     
-    if modoRanqueado == True:
-        def Nickname():
-            global nickname
-            os.system('cls||clear')
-            nickname = input("Antes do jogo ranqueado começar, escreva seu nickname para que possamos salvar sua pontuação:\nOBS: o nome deve conter entre 1 e 10 caracteres:\n")
-            if len(nickname) < 1 or len(nickname) > 10:
-                print("nome inválido, tente novamente!")
-                time.sleep(2)
-                Nickname()
-            return
-        Nickname()
-        
-        time.sleep(1)
-        print("Ok! Boa sorte na arena!")
-        time.sleep(2)
-    else:
-        os.system('cls||clear')
-        print("Boa sorte")
-        time.sleep(1)
+    os.system('cls||clear')
+    print("Boa sorte")
+    time.sleep(1)
     
     ResetGame()
     
     #inicia a tela  
     janela = pygame.display.set_mode((displayWidth, displayHeight))
     #inicia jogador
-    jogador = Jogador((0,200,0), 5, 50, tamanhoPixel, tamanhoPixel)
+    jogador = Jogador(5, 50, tamanhoPixel, tamanhoPixel)
     #Configurações iniciais
     pygame.init()
     pygame.font.init()
@@ -476,7 +485,7 @@ def Jogo():
         
         if modoRanqueado == True:
             avisoRanqueado = font.render(f'Modo Ranqueado', True, (255, 255, 255))
-            janela.blit(avisoRanqueado, ((displayWidth/2) - 40, 10))
+            janela.blit(avisoRanqueado, ((displayWidth/2) - 100, 10))
         #-------------------------------------------------#
         
         # evento de fechar a janela #
@@ -525,9 +534,9 @@ def Jogo():
             chance = random.randint(0, 500)
             if chance == 1:
                 if inimigo.municao >= 0:
-                    linhaInimigo = inimigo.rect.x
-                    colunaInimigo = inimigo.rect.y
-                    tiro = ProjeteisInimigos((255,255,0), linhaInimigo, colunaInimigo, tamanhoPixel, tamanhoPixel)
+                    linhaInimigo = inimigo.rect.x - 65
+                    colunaInimigo = inimigo.rect.y + 15
+                    tiro = ProjeteisInimigos(linhaInimigo, colunaInimigo, tamanhoPixel + 7, tamanhoPixel - 30)
                     qntTirosInimigo.append(tiro)
                 inimigo.municao -= 1
         #----------------------------------------#
@@ -632,18 +641,22 @@ def Jogo():
         if chance == 3:
             combustivel -= 1
         
-        pygame.draw.rect(janela, (0, 200, 0), jogador)
+        pygame.draw.rect(janela, (100,100,100), jogador)
+        janela.blit(jogador.image, jogador.rect)
         
         for inimigo in qntInimigosX:
-            pygame.draw.rect(janela, (220, 0 ,0), inimigo)
+            pygame.draw.rect(janela, (100,100,100), inimigo)
+            janela.blit(inimigo.image, inimigo.rect)
             inimigo.rect.x = inimigo.rect.x - inimigo.speed
         
         for inimigo in qntInimigosO:
-            pygame.draw.rect(janela, (216, 108, 0), inimigo)
+            pygame.draw.rect(janela, (100,100,100), inimigo)
+            janela.blit(inimigo.image, inimigo.rect)
             inimigo.rect.x = inimigo.rect.x - inimigo.speed        
 
         for inimigo in qntInimigosT:
-            pygame.draw.rect(janela, (128, 0, 0), inimigo)
+            pygame.draw.rect(janela, (100,100,100), inimigo)
+            janela.blit(inimigo.image, inimigo.rect)
             inimigo.rect.x = inimigo.rect.x - inimigo.speed
             inimigo.rect.y += (inimigo.speed * inimigo.direcao) * 0.75
             
@@ -654,15 +667,18 @@ def Jogo():
                 inimigo.direcao = 1
                     
         for tiro in qntTirosJogador:
-            pygame.draw.rect(janela, (0, 100, 50), tiro)
+            pygame.draw.rect(janela, (100,100,100), tiro)
+            janela.blit(tiro.image, tiro.rect)
             tiro.rect.x = tiro.rect.x + tiro.speed + 3
             
         for tiro in qntTirosInimigo:
-            pygame.draw.rect(janela, (255, 255, 0), tiro)
+            pygame.draw.rect(janela, (100,100,100), tiro)
+            janela.blit(tiro.image, tiro.rect)
             tiro.rect.x = tiro.rect.x - tiro.speed - 2
         
         for unidadeCombustivel in qntTanquesCombustivel:
-            pygame.draw.rect(janela, (0, 0, 255), unidadeCombustivel)
+            pygame.draw.rect(janela, (100,100,100), unidadeCombustivel)
+            janela.blit(unidadeCombustivel.image, unidadeCombustivel.rect)
             unidadeCombustivel.rect.x = unidadeCombustivel.rect.x - unidadeCombustivel.speed
             
         pygame.display.flip()
