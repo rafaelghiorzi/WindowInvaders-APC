@@ -22,15 +22,15 @@ import time
 import json
 
 # -------------VARIÁVEIS----------#
-displayHeight = 500
-displayWidth = 1000
+displayHeight = 600
+displayWidth = 1500
 tamanhoPixel = 40
 fps = float(50)
 combustivel = 400
 pontos = 0
 probabilidadeX = 40
 probabilidadeF = 100
-probabilidadeO = 1000
+probabilidadeO = 600
 probabilidadeT = 250
 vidaO = 10
 municaoT = 5 
@@ -54,7 +54,7 @@ class Jogador:
         self.color = (100,100,100)
         raw_image = pygame.image.load("./assets/jogador.png")
         self.image = pygame.transform.scale(raw_image, (tamanhoPixel, tamanhoPixel))
-        self.speed = velocidade + 1
+        self.speed = velocidade + 2
 
     def colisao(self, outro_rect):
         return self.rect.colliderect(outro_rect)
@@ -65,7 +65,7 @@ class Projeteis:
         self.color = (100,100,100)
         raw_image = pygame.image.load("./assets/tiroamigo.png")
         self.image = pygame.transform.scale(raw_image, (tamanhoPixel + 15, tamanhoPixel - 30))
-        self.speed = velocidade
+        self.speed = velocidade + 1
         self.rect.x = self.rect.x + self.speed
 
     def colisao(self, outro_rect):
@@ -77,7 +77,7 @@ class ProjeteisInimigos: #amarelo
         self.color = (100,100,100)
         raw_image = pygame.image.load("./assets/tiroinimigo.png")
         self.image = pygame.transform.scale(raw_image, (tamanhoPixel + 15, tamanhoPixel - 30))
-        self.speed = velocidade
+        self.speed = velocidade + 1
         self.rect.x = self.rect.x - self.speed + 10
 
     def colisao(self, outro_rect):
@@ -312,17 +312,18 @@ def NPCs():
     Config()
     
 def ModoRanqueado():
-    global modoRanqueado, displayHeight, displayWidth, probabilidadeF, probabilidadeO, probabilidadeT, probabilidadeX, municaoT, vidaO
+    global modoRanqueado, displayHeight, displayWidth, probabilidadeF, probabilidadeO, probabilidadeT, probabilidadeX, municaoT, vidaO, tamanhoPixel
     if modoRanqueado == True:
         os.system('cls||clear')
         escolha = input("Desativar modo ranqueado? (s/n):\n")
         if escolha == "s":
-            displayHeight = 500
-            displayWidth = 1000
+            displayHeight = 600
+            displayWidth = 1500
+            tamanhoPixel = 40
             modoRanqueado = False
             probabilidadeX = 40 # 1 até 4, 25% de chance
             probabilidadeF = 100# 10% de chance
-            probabilidadeO = 1000 # 1% de chance
+            probabilidadeO = 600 # 1% de chance
             probabilidadeT = 250
             vidaO = 10 #cada tiro dá 5
             municaoT = 5 #quantos tiros pode dar
@@ -331,8 +332,9 @@ def ModoRanqueado():
         elif escolha == "n":
             Nickname()
             modoRanqueado = True
-            displayHeight = 400
-            displayWidth = 1100
+            displayHeight = 500
+            displayWidth = 1200
+            tamanhoPixel = 40
             probabilidadeX = 60 # 1 até 4, 25% de chance
             probabilidadeF = 150 # 10% de chance
             probabilidadeO = 500 # 1% de chance
@@ -351,8 +353,9 @@ def ModoRanqueado():
         if escolha == "s":
             Nickname()
             modoRanqueado = True
-            displayHeight = 400
-            displayWidth = 1350
+            displayHeight = 500
+            displayWidth = 1200
+            tamanhoPixel = 40
             probabilidadeX = 40 # 1 até 4, 25% de chance
             probabilidadeF = 150 # 10% de chance
             probabilidadeO = 700 # 1% de chance
@@ -361,7 +364,8 @@ def ModoRanqueado():
             vidaO = 15
         elif escolha == "n":
             displayHeight = 500
-            displayWidth = 1000
+            displayWidth = 1200
+            tamanhoPixel = 40
             modoRanqueado = False
             probabilidadeX = 60 # 1 até 4, 25% de chance
             probabilidadeF = 100# 10% de chance
@@ -418,7 +422,7 @@ def Tiro():
 
     linha = jogador.rect.right
     combustivel -= 3
-    tiro = Projeteis(linha, jogador.rect.y + 15, tamanhoPixel + 7, tamanhoPixel - 30)
+    tiro = Projeteis(linha, jogador.rect.y + 15, tamanhoPixel + 3, tamanhoPixel - 30)
     qntTirosJogador.append(tiro)
 
 def InimigoX():
@@ -510,6 +514,12 @@ def Jogo():
 
         elif key[pygame.K_s] == True:
             jogador.rect.y = jogador.rect.y + jogador.speed
+            
+        elif key[pygame.K_d] == True:
+            jogador.rect.x = jogador.rect.x + jogador.speed
+        
+        elif key[pygame.K_a] == True:
+            jogador.rect.x = jogador.rect.x - jogador.speed - 1
         #----------------------------#
         
         # Cria tipos de inimigos e tanques de combustivel # (0 a 25 é fácil, 25 a 60 é média dificuldade, 60 a 100 é difícil)
@@ -536,7 +546,7 @@ def Jogo():
                 if inimigo.municao >= 0:
                     linhaInimigo = inimigo.rect.x - 65
                     colunaInimigo = inimigo.rect.y + 15
-                    tiro = ProjeteisInimigos(linhaInimigo, colunaInimigo, tamanhoPixel + 7, tamanhoPixel - 30)
+                    tiro = ProjeteisInimigos(linhaInimigo, colunaInimigo, tamanhoPixel + 3, tamanhoPixel - 30)
                     qntTirosInimigo.append(tiro)
                 inimigo.municao -= 1
         #----------------------------------------#
